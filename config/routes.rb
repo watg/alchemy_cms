@@ -1,3 +1,5 @@
+require 'alchemy/routing_constraints'
+
 Alchemy::Engine.routes.draw do
 
   root :to => 'pages#show'
@@ -154,13 +156,12 @@ Alchemy::Engine.routes.draw do
   end
 
   get '/:lang' => 'pages#show',
-      :constraints => {:lang => /[a-z]{2}(-[a-z]{2})?/},
-      :as => :show_language_root
+    constraints: {lang: /[a-z]{2}(-[a-z]{2})?/},
+    as: :show_language_root
 
   # The page show action has to be last route
   get '(/:lang)/*urlname(.:format)' => 'pages#show',
-      # :format => true,
-      :constraints => {:lang => /[a-z]{2}(-[a-z]{2})?/, :format => 'html'},
-      :as => :show_page
+    constraints: Alchemy::RoutingConstraints.new,
+    as: :show_page
 
 end
